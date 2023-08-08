@@ -221,6 +221,7 @@
         <?php else: ?>
             <!-- Without Wholesale -->
             <?php if(home_price($detailedProduct) != home_discounted_price($detailedProduct)): ?>
+                <?php if(Auth::user()): ?>
                 <div class="row no-gutters mb-3">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400"><?php echo e(translate('Price')); ?></div>
@@ -277,7 +278,9 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
             <?php else: ?>
+                <?php if(Auth::user()): ?>
                 <div class="row no-gutters mb-3">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400"><?php echo e(translate('Price')); ?></div>
@@ -324,6 +327,7 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
             <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
@@ -430,7 +434,7 @@
                 </div>
 
             <?php endif; ?>
-
+            <?php if(Auth::user()): ?>
             <!-- Total Price -->
             <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                 <div class="col-sm-2">
@@ -458,7 +462,7 @@
                     <?php endif; ?>
                 </div>
             </div>
-
+            <?php endif; ?>
         </form>
     <?php endif; ?>
 

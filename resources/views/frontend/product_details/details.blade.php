@@ -212,6 +212,7 @@
         @else
             <!-- Without Wholesale -->
             @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
+                @if(Auth::user())
                 <div class="row no-gutters mb-3">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
@@ -266,7 +267,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
             @else
+                @if(Auth::user())
                 <div class="row no-gutters mb-3">
                     <div class="col-sm-2">
                         <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
@@ -312,6 +315,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             @endif
         @endif
     @endif
@@ -416,7 +420,7 @@
                 </div>
 
             @endif
-
+            @if(Auth::user())
             <!-- Total Price -->
             <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                 <div class="col-sm-2">
@@ -444,7 +448,7 @@
                     @endif
                 </div>
             </div>
-
+            @endif
         </form>
     @endif
 

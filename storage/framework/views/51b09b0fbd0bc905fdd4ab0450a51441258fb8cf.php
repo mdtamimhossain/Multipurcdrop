@@ -28,6 +28,7 @@
                                         class="d-block text-reset hov-text-primary"><?php echo e($top_product->getTranslation('name')); ?></a>
                                 </h4>
                             </div>
+                            <?php if(Auth::user()): ?>
                             <div class="">
                                 <!-- Price -->
                                 <span class="fs-14 fw-700 text-primary"><?php echo e(home_discounted_base_price($top_product)); ?></span>
@@ -39,10 +40,12 @@
                                 </del>
                                 <?php endif; ?>
                             </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </li>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </ul>
     </div>
-</div><?php /**PATH C:\Users\Tamim\Documents\projects\multipurcdrop\resources\views/frontend/product_details/top_selling_products.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH C:\Users\Tamim\Documents\projects\multipurcdrop\resources\views/frontend/product_details/top_selling_products.blade.php ENDPATH**/ ?>

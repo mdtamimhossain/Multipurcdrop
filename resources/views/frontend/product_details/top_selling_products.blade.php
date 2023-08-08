@@ -27,6 +27,7 @@
                                         class="d-block text-reset hov-text-primary">{{ $top_product->getTranslation('name') }}</a>
                                 </h4>
                             </div>
+                            @if(Auth::user())
                             <div class="">
                                 <!-- Price -->
                                 <span class="fs-14 fw-700 text-primary">{{ home_discounted_base_price($top_product) }}</span>
@@ -37,6 +38,7 @@
                                 </del>
                                 @endif
                             </div>
+                            @endif
                         </div>
                     </div>
                 </li>

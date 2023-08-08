@@ -60,7 +60,10 @@ class CartController extends Controller
         if (!$validatedData) {
             return redirect()->back()->with('error', 'Give input you price');
         }
+
         $product = Product::find($request->id);
+        if($request->your_price<=$product->unit_price)
+            return redirect()->back()->with('error', 'Your price must be greater than product price');
         $carts = array();
         $data = array();
         $data['your_price']=$request->your_price;
