@@ -111,7 +111,7 @@
             font-family: 'Public Sans', sans-serif;
             font-weight: 400;
         }
-
+        
         .pagination .page-link,
         .page-item.disabled .page-link {
             min-width: 32px;
@@ -255,7 +255,7 @@
     <?php endif; ?>
 
     <?php echo $__env->make('frontend.partials.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
+    
     <?php echo $__env->make('frontend.partials.account_delete_modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <div class="modal fade" id="addToCart">
@@ -402,7 +402,7 @@
             if($trigger !== event.target && !$trigger.has(event.target).length){
                 $("#click-category-menu").slideUp("fast");;
                 $("#category-menu-bar-icon").removeClass('show');
-            }
+            }   
         });
 
         function updateNavCart(view,count){
@@ -554,16 +554,11 @@
         }
 
         function buyNow(){
-            var yourPriceInput = document.querySelector('input[name="your_price"]');
-            if (!yourPriceInput.value) {
-                AIZ.plugins.notify('warning', "Please fill in the 'your_price' field.");
-                return false;
-            }
             <?php if(Auth::check() && Auth::user()->user_type != 'customer'): ?>
                 AIZ.plugins.notify('warning', "<?php echo e(translate('Please Login as a customer to add products to the Cart.')); ?>");
                 return false;
             <?php endif; ?>
-
+            
             if(checkAddToCartValidity()) {
                 $('#addToCart-modal-body').html(null);
                 $('#addToCart').modal();
@@ -605,7 +600,7 @@
                 $('#login_modal').modal('show');
             <?php endif; ?>
         }
-
+        
         function clickToSlide(btn,id){
             $('#'+id+' .aiz-carousel').find('.'+btn).trigger('click');
             $('#'+id+' .slide-arrow').removeClass('link-disable');
@@ -639,7 +634,7 @@
             setTimeout(function(){
                 $('.cart-ok').css({ fill: '#d43533' });
             }, 2000);
-
+            
         });
     </script>
 
@@ -706,7 +701,7 @@
                     panel.style.maxHeight = null;
                 } else {
                     panel.style.maxHeight = panel.scrollHeight + "px";
-                }
+                } 
             });
         }
     </script>
