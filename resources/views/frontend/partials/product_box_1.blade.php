@@ -116,6 +116,11 @@
                     <span class="fw-700 text-primary">{{ home_discounted_base_price($product) }}</span>
                 </div>
             @endif
+                @if(!Auth::user())
+                    <div class="">
+                        <span class="fw-700 text-primary">Login to see price</span>
+                    </div>
+                @endif
             @endif
             @if ($product->auction_product == 1)
                 <!-- Bid Amount -->

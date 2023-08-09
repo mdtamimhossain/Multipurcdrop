@@ -51,6 +51,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+
         $validatedData = $request->validate([
             'your_price' => 'required',
         ]);
@@ -88,9 +89,12 @@ class CartController extends Controller
 
         $str = '';
         $tax = 0;
+
         if($product->auction_product == 0){
             if($product->digital != 1 && $request->quantity < $product->min_qty) {
+
                 return array(
+
                     'status' => 0,
                     'cart_count' => count($carts),
                     'modal_view' => view('frontend.partials.minQtyNotSatisfied', [ 'min_qty' => $product->min_qty ])->render(),
@@ -276,7 +280,7 @@ class CartController extends Controller
                 dd($carts);
 
             }
-            dd($data);
+
             if(auth()->user() != null) {
                 $user_id = Auth::user()->id;
                 $carts = Cart::where('user_id', $user_id)->get();

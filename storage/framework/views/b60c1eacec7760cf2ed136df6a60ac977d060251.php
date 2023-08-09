@@ -2,15 +2,15 @@
     <!-- Tabs -->
     <div class="nav aiz-nav-tabs">
         <a href="#tab_default_1" data-toggle="tab"
-            class="mr-5 pb-2 fs-16 fw-700 text-reset active show">{{ translate('Description') }}</a>
-        @if ($detailedProduct->video_link != null)
+            class="mr-5 pb-2 fs-16 fw-700 text-reset active show"><?php echo e(translate('Description')); ?></a>
+        <?php if($detailedProduct->video_link != null): ?>
             <a href="#tab_default_2" data-toggle="tab"
-                class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Video') }}</a>
-        @endif
-        @if ($detailedProduct->pdf != null)
+                class="mr-5 pb-2 fs-16 fw-700 text-reset"><?php echo e(translate('Video')); ?></a>
+        <?php endif; ?>
+        <?php if($detailedProduct->pdf != null): ?>
             <a href="#tab_default_3" data-toggle="tab"
-                class="mr-5 pb-2 fs-16 fw-700 text-reset">{{ translate('Downloads') }}</a>
-        @endif
+                class="mr-5 pb-2 fs-16 fw-700 text-reset"><?php echo e(translate('Downloads')); ?></a>
+        <?php endif; ?>
     </div>
 
     <!-- Description -->
@@ -29,18 +29,18 @@
         <div class="tab-pane fade" id="tab_default_2">
             <div class="py-5">
                 <div class="embed-responsive embed-responsive-16by9">
-                    @if ($detailedProduct->video_provider == 'youtube' && isset(explode('=', $detailedProduct->video_link)[1]))
+                    <?php if($detailedProduct->video_provider == 'youtube' && isset(explode('=', $detailedProduct->video_link)[1])): ?>
                         <iframe class="embed-responsive-item"
-                            src="https://www.youtube.com/embed/{{ get_url_params($detailedProduct->video_link, 'v') }}"></iframe>
-                    @elseif ($detailedProduct->video_provider == 'dailymotion' && isset(explode('video/', $detailedProduct->video_link)[1]))
+                            src="https://www.youtube.com/embed/<?php echo e(get_url_params($detailedProduct->video_link, 'v')); ?>"></iframe>
+                    <?php elseif($detailedProduct->video_provider == 'dailymotion' && isset(explode('video/', $detailedProduct->video_link)[1])): ?>
                         <iframe class="embed-responsive-item"
-                            src="https://www.dailymotion.com/embed/video/{{ explode('video/', $detailedProduct->video_link)[1] }}"></iframe>
-                    @elseif ($detailedProduct->video_provider == 'vimeo' && isset(explode('vimeo.com/', $detailedProduct->video_link)[1]))
+                            src="https://www.dailymotion.com/embed/video/<?php echo e(explode('video/', $detailedProduct->video_link)[1]); ?>"></iframe>
+                    <?php elseif($detailedProduct->video_provider == 'vimeo' && isset(explode('vimeo.com/', $detailedProduct->video_link)[1])): ?>
                         <iframe
-                            src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $detailedProduct->video_link)[1] }}"
+                            src="https://player.vimeo.com/video/<?php echo e(explode('vimeo.com/', $detailedProduct->video_link)[1]); ?>"
                             width="500" height="281" frameborder="0" webkitallowfullscreen
                             mozallowfullscreen allowfullscreen></iframe>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -48,8 +48,8 @@
         <!-- Download -->
         <div class="tab-pane fade" id="tab_default_3">
             <div class="py-5 text-center ">
-                <a href="{{ uploaded_asset($detailedProduct->pdf) }}"
-                    class="btn btn-primary">{{ translate('Download') }}</a>
+                <a href="<?php echo e(uploaded_asset($detailedProduct->pdf)); ?>"
+                    class="btn btn-primary"><?php echo e(translate('Download')); ?></a>
             </div>
         </div>
     </div>
@@ -70,3 +70,4 @@
         alert("Description copied to clipboard!");
     });
 </script>
+<?php /**PATH C:\Users\Tamim\Documents\projects\multipurcdrop\resources\views/frontend/product_details/description.blade.php ENDPATH**/ ?>

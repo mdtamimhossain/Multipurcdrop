@@ -1,37 +1,40 @@
 <div class="text-left">
     <!-- Product Name -->
     <h1 class="mb-4 fs-16 fw-700 text-dark">
-        {{ $detailedProduct->getTranslation('name') }}
+        <?php echo e($detailedProduct->getTranslation('name')); ?>
+
     </h1>
 
     <div class="row align-items-center mb-3">
         <!-- Review -->
-        @if ($detailedProduct->auction_product != 1)
+        <?php if($detailedProduct->auction_product != 1): ?>
             <div class="col-12">
-                @php
+                <?php
                     $total = 0;
                     $total += $detailedProduct->reviews->count();
-                @endphp
+                ?>
                 <span class="rating rating-mr-1">
-                    {{ renderStarRating($detailedProduct->rating) }}
+                    <?php echo e(renderStarRating($detailedProduct->rating)); ?>
+
                 </span>
-                <span class="ml-1 opacity-50 fs-14">({{ $total }}
-                    {{ translate('reviews') }})</span>
+                <span class="ml-1 opacity-50 fs-14">(<?php echo e($total); ?>
+
+                    <?php echo e(translate('reviews')); ?>)</span>
             </div>
-        @endif
+        <?php endif; ?>
         <!-- Estimate Shipping Time -->
-        @if ($detailedProduct->est_shipping_days)
+        <?php if($detailedProduct->est_shipping_days): ?>
             <div class="col-auto fs-14 mt-1">
-                <small class="mr-1 opacity-50 fs-14">{{ translate('Estimate Shipping Time') }}:</small>
-                <span class="fw-500">{{ $detailedProduct->est_shipping_days }} {{ translate('Days') }}</span>
+                <small class="mr-1 opacity-50 fs-14"><?php echo e(translate('Estimate Shipping Time')); ?>:</small>
+                <span class="fw-500"><?php echo e($detailedProduct->est_shipping_days); ?> <?php echo e(translate('Days')); ?></span>
             </div>
-        @endif
+        <?php endif; ?>
         <!-- In stock -->
-        @if ($detailedProduct->digital == 1)
+        <?php if($detailedProduct->digital == 1): ?>
             <div class="col-12 mt-1">
-                <span class="badge badge-md badge-inline badge-pill badge-success">{{ translate('In stock') }}</span>
+                <span class="badge badge-md badge-inline badge-pill badge-success"><?php echo e(translate('In stock')); ?></span>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
     <div class="row align-items-center">
         <!-- Ask about this product -->
@@ -52,53 +55,55 @@
                               transform="translate(962.004 400.504)" fill="#f3af3d" />
                     </g>
                 </svg>
-                <span class="ml-2 text-primary animate-underline-blue">{{ translate('Product Inquiry') }}</span>
+                <span class="ml-2 text-primary animate-underline-blue"><?php echo e(translate('Product Inquiry')); ?></span>
             </a>
         </div>
         <div class="col mb-3">
-            @if ($detailedProduct->auction_product != 1)
+            <?php if($detailedProduct->auction_product != 1): ?>
                 <div class="d-flex">
                     <!-- Add to wishlist button -->
-                    <a href="javascript:void(0)" onclick="addToWishList({{ $detailedProduct->id }})"
+                    <a href="javascript:void(0)" onclick="addToWishList(<?php echo e($detailedProduct->id); ?>)"
                        class="mr-3 fs-14 text-dark opacity-60 has-transitiuon hov-opacity-100">
                         <i class="la la-heart-o mr-1"></i>
-                        {{ translate('Add to Wishlist') }}
+                        <?php echo e(translate('Add to Wishlist')); ?>
+
                     </a>
                     <!-- Add to compare button -->
-                    <a href="javascript:void(0)" onclick="addToCompare({{ $detailedProduct->id }})"
+                    <a href="javascript:void(0)" onclick="addToCompare(<?php echo e($detailedProduct->id); ?>)"
                        class="fs-14 text-dark opacity-60 has-transitiuon hov-opacity-100">
                         <i class="las la-sync mr-1"></i>
-                        {{ translate('Add to Compare') }}
+                        <?php echo e(translate('Add to Compare')); ?>
+
                     </a>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
     </div>
 
 
     <!-- Brand Logo & Name -->
-    @if ($detailedProduct->brand != null)
+    <?php if($detailedProduct->brand != null): ?>
         <div class="d-flex flex-wrap align-items-center mb-3">
-            <span class="text-secondary fs-14 fw-400 mr-4 w-50px">{{ translate('Brand') }}</span><br>
-            <a href="{{ route('products.brand', $detailedProduct->brand->slug) }}"
-               class="text-reset hov-text-primary fs-14 fw-700">{{ $detailedProduct->brand->name }}</a>
+            <span class="text-secondary fs-14 fw-400 mr-4 w-50px"><?php echo e(translate('Brand')); ?></span><br>
+            <a href="<?php echo e(route('products.brand', $detailedProduct->brand->slug)); ?>"
+               class="text-reset hov-text-primary fs-14 fw-700"><?php echo e($detailedProduct->brand->name); ?></a>
         </div>
-    @endif
+    <?php endif; ?>
 
     <!-- Seller Info -->
     <div class="d-flex flex-wrap align-items-center">
         <div class="d-flex align-items-center mr-4">
             <!-- Shop Name -->
-            @if ($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1)
-                <span class="text-secondary fs-14 fw-400 mr-4 w-50px">{{ translate('Sold by') }}</span>
-                <a href="{{ route('shop.visit', $detailedProduct->user->shop->slug) }}"
-                   class="text-reset hov-text-primary fs-14 fw-700">{{ $detailedProduct->user->shop->name }}</a>
-            @else
-                <p class="mb-0 fs-14 fw-700">{{ translate('Inhouse product') }}</p>
-            @endif
+            <?php if($detailedProduct->added_by == 'seller' && get_setting('vendor_system_activation') == 1): ?>
+                <span class="text-secondary fs-14 fw-400 mr-4 w-50px"><?php echo e(translate('Sold by')); ?></span>
+                <a href="<?php echo e(route('shop.visit', $detailedProduct->user->shop->slug)); ?>"
+                   class="text-reset hov-text-primary fs-14 fw-700"><?php echo e($detailedProduct->user->shop->name); ?></a>
+            <?php else: ?>
+                <p class="mb-0 fs-14 fw-700"><?php echo e(translate('Inhouse product')); ?></p>
+            <?php endif; ?>
         </div>
         <!-- Messase to seller -->
-        @if (get_setting('conversation_system') == 1)
+        <?php if(get_setting('conversation_system') == 1): ?>
             <div class="">
                 <button class="btn btn-sm btn-soft-warning btn-outline-warning hov-svg-white hov-text-white rounded-4"
                         onclick="show_chat_modal()">
@@ -120,124 +125,130 @@
                         </g>
                     </svg>
 
-                    {{ translate('Message Seller') }}
+                    <?php echo e(translate('Message Seller')); ?>
+
                 </button>
             </div>
-        @endif
+        <?php endif; ?>
     </div>
 
     <hr>
 
     <!-- For auction product -->
-    @if ($detailedProduct->auction_product)
+    <?php if($detailedProduct->auction_product): ?>
         <div class="row no-gutters mb-3">
             <div class="col-sm-2">
-                <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Auction Will End') }}</div>
+                <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('Auction Will End')); ?></div>
             </div>
             <div class="col-sm-10">
-                @if ($detailedProduct->auction_end_date > strtotime('now'))
+                <?php if($detailedProduct->auction_end_date > strtotime('now')): ?>
                     <div class="aiz-count-down align-items-center"
-                         data-date="{{ date('Y/m/d H:i:s', $detailedProduct->auction_end_date) }}"></div>
-                @else
-                    <p>{{ translate('Ended') }}</p>
-                @endif
+                         data-date="<?php echo e(date('Y/m/d H:i:s', $detailedProduct->auction_end_date)); ?>"></div>
+                <?php else: ?>
+                    <p><?php echo e(translate('Ended')); ?></p>
+                <?php endif; ?>
 
             </div>
         </div>
 
         <div class="row no-gutters mb-3">
             <div class="col-sm-2">
-                <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Starting Bid') }}</div>
+                <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('Starting Bid')); ?></div>
             </div>
             <div class="col-sm-10">
                 <span class="opacity-50 fs-20">
-                    {{ single_price($detailedProduct->starting_bid) }}
+                    <?php echo e(single_price($detailedProduct->starting_bid)); ?>
+
                 </span>
-                @if ($detailedProduct->unit != null)
-                    <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                @endif
+                <?php if($detailedProduct->unit != null): ?>
+                    <span class="opacity-70">/<?php echo e($detailedProduct->getTranslation('unit')); ?></span>
+                <?php endif; ?>
             </div>
         </div>
 
-        @if (Auth::check() &&
-                Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first() != null)
+        <?php if(Auth::check() &&
+                Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first() != null): ?>
             <div class="row no-gutters mb-3">
                 <div class="col-sm-2">
-                    <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('My Bidded Amount') }}</div>
+                    <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('My Bidded Amount')); ?></div>
                 </div>
                 <div class="col-sm-10">
                     <span class="opacity-50 fs-20">
-                        {{ single_price(Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first()->amount) }}
+                        <?php echo e(single_price(Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first()->amount)); ?>
+
                     </span>
                 </div>
             </div>
             <hr>
-        @endif
+        <?php endif; ?>
 
-        @php $highest_bid = $detailedProduct->bids->max('amount'); @endphp
+        <?php $highest_bid = $detailedProduct->bids->max('amount'); ?>
         <div class="row no-gutters my-2 mb-3">
             <div class="col-sm-2">
-                <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Highest Bid') }}</div>
+                <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('Highest Bid')); ?></div>
             </div>
             <div class="col-sm-10">
                 <strong class="h3 fw-600 text-primary">
-                    @if ($highest_bid != null)
-                        {{ single_price($highest_bid) }}
-                    @endif
+                    <?php if($highest_bid != null): ?>
+                        <?php echo e(single_price($highest_bid)); ?>
+
+                    <?php endif; ?>
                 </strong>
             </div>
         </div>
-    @else
+    <?php else: ?>
         <!-- Without auction product -->
-        @if ($detailedProduct->wholesale_product == 1)
+        <?php if($detailedProduct->wholesale_product == 1): ?>
             <!-- Wholesale -->
             <table class="table mb-3">
                 <thead>
                 <tr>
-                    <th class="border-top-0">{{ translate('Min Qty') }}</th>
-                    <th class="border-top-0">{{ translate('Max Qty') }}</th>
-                    <th class="border-top-0">{{ translate('Unit Price') }}</th>
+                    <th class="border-top-0"><?php echo e(translate('Min Qty')); ?></th>
+                    <th class="border-top-0"><?php echo e(translate('Max Qty')); ?></th>
+                    <th class="border-top-0"><?php echo e(translate('Unit Price')); ?></th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($detailedProduct->stocks->first()->wholesalePrices as $wholesalePrice)
+                <?php $__currentLoopData = $detailedProduct->stocks->first()->wholesalePrices; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $wholesalePrice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{ $wholesalePrice->min_qty }}</td>
-                        <td>{{ $wholesalePrice->max_qty }}</td>
-                        <td>{{ single_price($wholesalePrice->price) }}</td>
+                        <td><?php echo e($wholesalePrice->min_qty); ?></td>
+                        <td><?php echo e($wholesalePrice->max_qty); ?></td>
+                        <td><?php echo e(single_price($wholesalePrice->price)); ?></td>
                     </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
-        @else
+        <?php else: ?>
             <!-- Without Wholesale -->
-            @if (home_price($detailedProduct) != home_discounted_price($detailedProduct))
-                @if(Auth::user())
+            <?php if(home_price($detailedProduct) != home_discounted_price($detailedProduct)): ?>
+                <?php if(Auth::user()): ?>
                     <div class="row no-gutters mb-3">
                         <div class="col-sm-2">
-                            <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
+                            <div class="text-secondary fs-14 fw-400"><?php echo e(translate('Price')); ?></div>
                         </div>
                         <div class="col-sm-10">
                             <div class="d-flex align-items-center">
                                 <!-- Discount Price -->
                                 <strong class="fs-16 fw-700 text-primary">
-                                    {{ home_discounted_price($detailedProduct) }}
+                                    <?php echo e(home_discounted_price($detailedProduct)); ?>
+
                                 </strong>
                                 <!-- Home Price -->
                                 <del class="fs-14 opacity-60 ml-2">
-                                    {{ home_price($detailedProduct) }}
+                                    <?php echo e(home_price($detailedProduct)); ?>
+
                                 </del>
                                 <!-- Unit -->
-                                @if ($detailedProduct->unit != null)
-                                    <span class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                                @endif
+                                <?php if($detailedProduct->unit != null): ?>
+                                    <span class="opacity-70 ml-1">/<?php echo e($detailedProduct->getTranslation('unit')); ?></span>
+                                <?php endif; ?>
                                 <!-- Discount percentage -->
-                                @if (discount_in_percentage($detailedProduct) > 0)
+                                <?php if(discount_in_percentage($detailedProduct) > 0): ?>
                                     <span class="bg-primary ml-2 fs-11 fw-700 text-white w-35px text-center p-1"
-                                          style="padding-top:2px;padding-bottom:2px;">-{{ discount_in_percentage($detailedProduct) }}%</span>
-                                @endif
+                                          style="padding-top:2px;padding-bottom:2px;">-<?php echo e(discount_in_percentage($detailedProduct)); ?>%</span>
+                                <?php endif; ?>
                                 <!-- Club Point -->
-                                @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
+                                <?php if(addon_is_activated('club_point') && $detailedProduct->earn_point > 0): ?>
                                     <div class="ml-2 bg-warning d-flex justify-content-center align-items-center px-3 py-1"
                                          style="width: fit-content;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
@@ -260,32 +271,33 @@
                                                 </g>
                                             </g>
                                         </svg>
-                                        <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
-                                            {{ $detailedProduct->earn_point }}</small>
+                                        <small class="fs-11 fw-500 text-white ml-2"><?php echo e(translate('Club Point')); ?>:
+                                            <?php echo e($detailedProduct->earn_point); ?></small>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
-                @endif
-            @else
-                @if(Auth::user())
+                <?php endif; ?>
+            <?php else: ?>
+                <?php if(Auth::user()): ?>
                     <div class="row no-gutters mb-3">
                         <div class="col-sm-2">
-                            <div class="text-secondary fs-14 fw-400">{{ translate('Price') }}</div>
+                            <div class="text-secondary fs-14 fw-400"><?php echo e(translate('Price')); ?></div>
                         </div>
                         <div class="col-sm-10">
                             <div class="d-flex align-items-center">
                                 <!-- Discount Price -->
                                 <strong class="fs-16 fw-700 text-primary">
-                                    {{ home_discounted_price($detailedProduct) }}
+                                    <?php echo e(home_discounted_price($detailedProduct)); ?>
+
                                 </strong>
                                 <!-- Unit -->
-                                @if ($detailedProduct->unit != null)
-                                    <span class="opacity-70">/{{ $detailedProduct->getTranslation('unit') }}</span>
-                                @endif
+                                <?php if($detailedProduct->unit != null): ?>
+                                    <span class="opacity-70">/<?php echo e($detailedProduct->getTranslation('unit')); ?></span>
+                                <?php endif; ?>
                                 <!-- Club Point -->
-                                @if (addon_is_activated('club_point') && $detailedProduct->earn_point > 0)
+                                <?php if(addon_is_activated('club_point') && $detailedProduct->earn_point > 0): ?>
                                     <div class="ml-2 bg-warning d-flex justify-content-center align-items-center px-3 py-1"
                                          style="width: fit-content;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
@@ -308,82 +320,84 @@
                                                 </g>
                                             </g>
                                         </svg>
-                                        <small class="fs-11 fw-500 text-white ml-2">{{ translate('Club Point') }}:
-                                            {{ $detailedProduct->earn_point }}</small>
+                                        <small class="fs-11 fw-500 text-white ml-2"><?php echo e(translate('Club Point')); ?>:
+                                            <?php echo e($detailedProduct->earn_point); ?></small>
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
-                @endif
-            @endif
-        @endif
-    @endif
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
 
-    @if ($detailedProduct->auction_product != 1)
+    <?php if($detailedProduct->auction_product != 1): ?>
         <form id="option-choice-form">
-            @csrf
-            <input type="hidden" name="id" value="{{ $detailedProduct->id }}">
+            <?php echo csrf_field(); ?>
+            <input type="hidden" name="id" value="<?php echo e($detailedProduct->id); ?>">
 
-            @if ($detailedProduct->digital == 0)
+            <?php if($detailedProduct->digital == 0): ?>
                 <!-- Choice Options -->
-                @if ($detailedProduct->choice_options != null)
-                    @foreach (json_decode($detailedProduct->choice_options) as $key => $choice)
+                <?php if($detailedProduct->choice_options != null): ?>
+                    <?php $__currentLoopData = json_decode($detailedProduct->choice_options); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $choice): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <div class="row no-gutters mb-3">
                             <div class="col-sm-2">
                                 <div class="text-secondary fs-14 fw-400 mt-2 ">
-                                    {{ \App\Models\Attribute::find($choice->attribute_id)->getTranslation('name') }}
+                                    <?php echo e(\App\Models\Attribute::find($choice->attribute_id)->getTranslation('name')); ?>
+
                                 </div>
                             </div>
                             <div class="col-sm-10">
                                 <div class="aiz-radio-inline">
-                                    @foreach ($choice->values as $key => $value)
+                                    <?php $__currentLoopData = $choice->values; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <label class="aiz-megabox pl-0 mr-2 mb-0">
-                                            <input type="radio" name="attribute_id_{{ $choice->attribute_id }}"
-                                                   value="{{ $value }}"
-                                                   @if ($key == 0) checked @endif>
+                                            <input type="radio" name="attribute_id_<?php echo e($choice->attribute_id); ?>"
+                                                   value="<?php echo e($value); ?>"
+                                                   <?php if($key == 0): ?> checked <?php endif; ?>>
                                             <span
                                                 class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center py-1 px-3">
-                                                {{ $value }}
+                                                <?php echo e($value); ?>
+
                                             </span>
                                         </label>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                @endif
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
 
                 <!-- Color Options -->
-                @if (count(json_decode($detailedProduct->colors)) > 0)
+                <?php if(count(json_decode($detailedProduct->colors)) > 0): ?>
                     <div class="row no-gutters mb-3">
                         <div class="col-sm-2">
-                            <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Color') }}</div>
+                            <div class="text-secondary fs-14 fw-400 mt-2"><?php echo e(translate('Color')); ?></div>
                         </div>
                         <div class="col-sm-10">
                             <div class="aiz-radio-inline">
-                                @foreach (json_decode($detailedProduct->colors) as $key => $color)
+                                <?php $__currentLoopData = json_decode($detailedProduct->colors); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <label class="aiz-megabox pl-0 mr-2 mb-0" data-toggle="tooltip"
-                                           data-title="{{ \App\Models\Color::where('code', $color)->first()->name }}">
+                                           data-title="<?php echo e(\App\Models\Color::where('code', $color)->first()->name); ?>">
                                         <input type="radio" name="color"
-                                               value="{{ \App\Models\Color::where('code', $color)->first()->name }}"
-                                               @if ($key == 0) checked @endif>
+                                               value="<?php echo e(\App\Models\Color::where('code', $color)->first()->name); ?>"
+                                               <?php if($key == 0): ?> checked <?php endif; ?>>
                                         <span
                                             class="aiz-megabox-elem rounded-0 d-flex align-items-center justify-content-center p-1">
                                             <span class="size-25px d-inline-block rounded"
-                                                  style="background: {{ $color }};"></span>
+                                                  style="background: <?php echo e($color); ?>;"></span>
                                         </span>
                                     </label>
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </div>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <!-- Quantity + Add to cart -->
                 <div class="row no-gutters mb-3">
                     <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Quantity') }}</div>
+                        <div class="text-secondary fs-14 fw-400 mt-2"><?php echo e(translate('Quantity')); ?></div>
                     </div>
                     <div class="col-sm-10">
                         <div class="product-quantity d-flex align-items-center">
@@ -394,37 +408,37 @@
                                 </button>
                                 <input type="number" name="quantity"
                                        class="col border-0 text-center flex-grow-1 fs-16 input-number" placeholder="1"
-                                       value="{{ $detailedProduct->min_qty }}" min="{{ $detailedProduct->min_qty }}"
+                                       value="<?php echo e($detailedProduct->min_qty); ?>" min="<?php echo e($detailedProduct->min_qty); ?>"
                                        max="10" lang="en">
                                 <button class="btn col-auto btn-icon btn-sm btn-light rounded-0" type="button"
                                         data-type="plus" data-field="quantity">
                                     <i class="las la-plus"></i>
                                 </button>
                             </div>
-                            @php
+                            <?php
                                 $qty = 0;
                                 foreach ($detailedProduct->stocks as $key => $stock) {
                                     $qty += $stock->qty;
                                 }
-                            @endphp
+                            ?>
                             <div class="avialable-amount opacity-60">
-                                @if ($detailedProduct->stock_visibility_state == 'quantity')
-                                    (<span id="available-quantity">{{ $qty }}</span>
-                                    {{ translate('available') }})
-                                @elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1)
-                                    (<span id="available-quantity">{{ translate('In Stock') }}</span>)
-                                @endif
+                                <?php if($detailedProduct->stock_visibility_state == 'quantity'): ?>
+                                    (<span id="available-quantity"><?php echo e($qty); ?></span>
+                                    <?php echo e(translate('available')); ?>)
+                                <?php elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1): ?>
+                                    (<span id="available-quantity"><?php echo e(translate('In Stock')); ?></span>)
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            @endif
-            @if(Auth::user())
+            <?php endif; ?>
+            <?php if(Auth::user()): ?>
                 <!-- Total Price -->
                 <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                     <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Total Price') }}</div>
+                        <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('Total Price')); ?></div>
                     </div>
                     <div class="col-sm-10">
                         <div class="product-price">
@@ -436,89 +450,95 @@
                 </div>
                 <div class="row no-gutters pb-3 d-none" id="chosen_price_div">
                     <div class="col-sm-2">
-                        <div class="text-secondary fs-14 fw-400 mt-1">{{ translate('Your Price') }}</div>
+                        <div class="text-secondary fs-14 fw-400 mt-1"><?php echo e(translate('Your Price')); ?></div>
                     </div>
                     <div class="col-sm-10">
 
                         <div class="form-outline product-price">
                             <input type="number"name="your_price" class=" fs-20 fw-700 text-primary form-control col-3"id="typeNumber" style="max-width: 150px;" required >
                         </div>
-                        @if (isset($errors) && $errors->has('your_price'))
-                            <span class="text-danger"><strong>{{ $errors->first('your_price') }}</strong></span>
-                        @endif
+                        <?php if(isset($errors) && $errors->has('your_price')): ?>
+                            <span class="text-danger"><strong><?php echo e($errors->first('your_price')); ?></strong></span>
+                        <?php endif; ?>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </form>
-    @endif
+    <?php endif; ?>
 
-    @if ($detailedProduct->auction_product)
-        @php
+    <?php if($detailedProduct->auction_product): ?>
+        <?php
             $highest_bid = $detailedProduct->bids->max('amount');
             $min_bid_amount = $highest_bid != null ? $highest_bid + 1 : $detailedProduct->starting_bid;
-        @endphp
-        @if ($detailedProduct->auction_end_date >= strtotime('now'))
+        ?>
+        <?php if($detailedProduct->auction_end_date >= strtotime('now')): ?>
             <div class="mt-4">
-                @if (Auth::check() && $detailedProduct->user_id == Auth::user()->id)
+                <?php if(Auth::check() && $detailedProduct->user_id == Auth::user()->id): ?>
                     <span
-                        class="badge badge-inline badge-danger">{{ translate('Seller Can Not Place Bid to His Own Product') }}</span>
-                @else
+                        class="badge badge-inline badge-danger"><?php echo e(translate('Seller Can Not Place Bid to His Own Product')); ?></span>
+                <?php else: ?>
                     <button type="button" class="btn btn-primary buy-now  fw-600 min-w-150px rounded-0"
                             onclick="bid_modal()">
                         <i class="las la-gavel"></i>
-                        @if (Auth::check() &&
-                                Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first() != null)
-                            {{ translate('Change Bid') }}
-                        @else
-                            {{ translate('Place Bid') }}
-                        @endif
+                        <?php if(Auth::check() &&
+                                Auth::user()->product_bids->where('product_id', $detailedProduct->id)->first() != null): ?>
+                            <?php echo e(translate('Change Bid')); ?>
+
+                        <?php else: ?>
+                            <?php echo e(translate('Place Bid')); ?>
+
+                        <?php endif; ?>
                     </button>
-                @endif
+                <?php endif; ?>
             </div>
-        @endif
-    @else
+        <?php endif; ?>
+    <?php else: ?>
         <!-- Add to cart & Buy now Buttons -->
         <div class="mt-3">
-            @if ($detailedProduct->digital == 0)
-                @if ($detailedProduct->external_link != null)
+            <?php if($detailedProduct->digital == 0): ?>
+                <?php if($detailedProduct->external_link != null): ?>
                     <a type="button" class="btn btn-primary buy-now fw-600 add-to-cart px-4 rounded-0"
-                       href="{{ $detailedProduct->external_link }}">
-                        <i class="la la-share"></i> {{ translate($detailedProduct->external_link_btn) }}
+                       href="<?php echo e($detailedProduct->external_link); ?>">
+                        <i class="la la-share"></i> <?php echo e(translate($detailedProduct->external_link_btn)); ?>
+
                     </a>
-                @else
+                <?php else: ?>
 
                     <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
-                            @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
-                        <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                            <?php if(Auth::check()): ?> onclick="buyNow()" <?php else: ?> onclick="showLoginModal()" <?php endif; ?>>
+                        <i class="la la-shopping-cart"></i> <?php echo e(translate('Buy Now')); ?>
+
                     </button>
-                @endif
+                <?php endif; ?>
                 <button type="button" class="btn btn-secondary out-of-stock fw-600 d-none" disabled>
-                    <i class="la la-cart-arrow-down"></i> {{ translate('Out of Stock') }}
+                    <i class="la la-cart-arrow-down"></i> <?php echo e(translate('Out of Stock')); ?>
+
                 </button>
-            @elseif ($detailedProduct->digital == 1)
+            <?php elseif($detailedProduct->digital == 1): ?>
                 <button type="button"
                         class="btn btn-warning mr-2 add-to-cart fw-600 min-w-150px rounded-0 text-white"
-                        @if (Auth::check()) onclick="addToCart()" @else onclick="showLoginModal()" @endif>
+                        <?php if(Auth::check()): ?> onclick="addToCart()" <?php else: ?> onclick="showLoginModal()" <?php endif; ?>>
                     <i class="las la-shopping-bag"></i>
-                    <span class="d-none d-md-inline-block"> {{ translate('Add to cart') }}</span>
+                    <span class="d-none d-md-inline-block"> <?php echo e(translate('Add to cart')); ?></span>
                 </button>
                 <button type="button" class="btn btn-primary buy-now fw-600 add-to-cart min-w-150px rounded-0"
-                        @if (Auth::check()) onclick="buyNow()" @else onclick="showLoginModal()" @endif>
-                    <i class="la la-shopping-cart"></i> {{ translate('Buy Now') }}
+                        <?php if(Auth::check()): ?> onclick="buyNow()" <?php else: ?> onclick="showLoginModal()" <?php endif; ?>>
+                    <i class="la la-shopping-cart"></i> <?php echo e(translate('Buy Now')); ?>
+
                 </button>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Promote Link -->
         <div class="d-table width-100 mt-3">
             <div class="d-table-cell">
-                @if (Auth::check() &&
+                <?php if(Auth::check() &&
                         addon_is_activated('affiliate_system') &&
                         (\App\Models\AffiliateOption::where('type', 'product_sharing')->first()->status ||
                             \App\Models\AffiliateOption::where('type', 'category_wise_affiliate')->first()->status) &&
                         Auth::user()->affiliate_user != null &&
-                        Auth::user()->affiliate_user->status)
-                    @php
+                        Auth::user()->affiliate_user->status): ?>
+                    <?php
                         if (Auth::check()) {
                             if (Auth::user()->referral_code == null) {
                                 Auth::user()->referral_code = substr(Auth::user()->id . Str::random(10), 0, 10);
@@ -527,61 +547,62 @@
                             $referral_code = Auth::user()->referral_code;
                             $referral_code_url = URL::to('/product') . '/' . $detailedProduct->slug . "?product_referral_code=$referral_code";
                         }
-                    @endphp
+                    ?>
                     <div>
                         <button type="button" id="ref-cpurl-btn" class="btn btn-secondary w-200px rounded-0"
-                                data-attrcpy="{{ translate('Copied') }}" onclick="CopyToClipboard(this)"
-                                data-url="{{ $referral_code_url }}">{{ translate('Copy the Promote Link') }}</button>
+                                data-attrcpy="<?php echo e(translate('Copied')); ?>" onclick="CopyToClipboard(this)"
+                                data-url="<?php echo e($referral_code_url); ?>"><?php echo e(translate('Copy the Promote Link')); ?></button>
                     </div>
-                @endif
+                <?php endif; ?>
             </div>
         </div>
 
         <!-- Refund -->
-        @php
+        <?php
             $refund_sticker = get_setting('refund_sticker');
-        @endphp
-        @if (addon_is_activated('refund_request'))
+        ?>
+        <?php if(addon_is_activated('refund_request')): ?>
             <div class="row no-gutters mt-3">
                 <div class="col-sm-2">
-                    <div class="text-secondary fs-14 fw-400 mt-2">{{ translate('Refund') }}</div>
+                    <div class="text-secondary fs-14 fw-400 mt-2"><?php echo e(translate('Refund')); ?></div>
                 </div>
                 <div class="col-sm-10">
-                    @if ($detailedProduct->refundable == 1)
-                        <a href="{{ route('returnpolicy') }}" target="_blank">
-                            @if ($refund_sticker != null)
-                                <img src="{{ uploaded_asset($refund_sticker) }}" height="36">
-                            @else
-                                <img src="{{ static_asset('assets/img/refund-sticker.jpg') }}" height="36">
-                            @endif
+                    <?php if($detailedProduct->refundable == 1): ?>
+                        <a href="<?php echo e(route('returnpolicy')); ?>" target="_blank">
+                            <?php if($refund_sticker != null): ?>
+                                <img src="<?php echo e(uploaded_asset($refund_sticker)); ?>" height="36">
+                            <?php else: ?>
+                                <img src="<?php echo e(static_asset('assets/img/refund-sticker.jpg')); ?>" height="36">
+                            <?php endif; ?>
                         </a>
-                        <a href="{{ route('returnpolicy') }}" class="text-blue hov-text-primary fs-14 ml-3"
-                           target="_blank">{{ translate('View Policy') }}</a>
-                    @else
-                        <div class="text-dark fs-14 fw-400 mt-2">{{ translate('Not Applicable') }}</div>
-                    @endif
+                        <a href="<?php echo e(route('returnpolicy')); ?>" class="text-blue hov-text-primary fs-14 ml-3"
+                           target="_blank"><?php echo e(translate('View Policy')); ?></a>
+                    <?php else: ?>
+                        <div class="text-dark fs-14 fw-400 mt-2"><?php echo e(translate('Not Applicable')); ?></div>
+                    <?php endif; ?>
                 </div>
             </div>
-        @endif
+        <?php endif; ?>
 
         <!-- Seller Guarantees -->
-        @if ($detailedProduct->digital == 1)
-            @if ($detailedProduct->added_by == 'seller')
+        <?php if($detailedProduct->digital == 1): ?>
+            <?php if($detailedProduct->added_by == 'seller'): ?>
                 <div class="row no-gutters mt-3">
                     <div class="col-2">
-                        <div class="text-secondary fs-14 fw-400">{{ translate('Seller Guarantees') }}</div>
+                        <div class="text-secondary fs-14 fw-400"><?php echo e(translate('Seller Guarantees')); ?></div>
                     </div>
                     <div class="col-10">
-                        @if ($detailedProduct->user->shop->verification_status == 1)
-                            <span class="text-success fs-14 fw-700">{{ translate('Verified seller') }}</span>
-                        @else
-                            <span class="text-danger fs-14 fw-700">{{ translate('Non verified seller') }}</span>
-                        @endif
+                        <?php if($detailedProduct->user->shop->verification_status == 1): ?>
+                            <span class="text-success fs-14 fw-700"><?php echo e(translate('Verified seller')); ?></span>
+                        <?php else: ?>
+                            <span class="text-danger fs-14 fw-700"><?php echo e(translate('Non verified seller')); ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
-            @endif
-        @endif
-    @endif
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endif; ?>
 
     <!-- Share -->
 </div>
+<?php /**PATH C:\Users\Tamim\Documents\projects\multipurcdrop\resources\views/frontend/product_details/details.blade.php ENDPATH**/ ?>

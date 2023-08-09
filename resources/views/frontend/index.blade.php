@@ -3,7 +3,146 @@
 @section('content')
 
 
+    <!-- Sliders & Today's deal -->
+    <div class="home-banner-area mb-3" style="">
+        <div class="container">
+            <div class="d-flex flex-wrap position-relative">
+                <div class="position-static d-none d-xl-block">
+                    @include('frontend.partials.category_menu')
+                </div>
 
+                <!-- Sliders -->
+                <div class="home-slider">
+                    @if (get_setting('home_slider_images') != null)
+                        <div class="aiz-carousel dots-inside-bottom mobile-img-auto-height" data-autoplay="true">
+                            @php $slider_images = json_decode(get_setting('home_slider_images'), true);  @endphp
+                            @foreach ($slider_images as $key => $value)
+                                <div class="carousel-box">
+                                    <a href="{{ json_decode(get_setting('home_slider_links'), true)[$key] }}">
+                                        <!-- Image -->
+                                        <img class="d-block mw-100 img-fit overflow-hidden h-sm-auto h-md-320px h-lg-460px overflow-hidden"
+                                             src="{{ uploaded_asset($slider_images[$key]) }}"
+                                             alt="{{ env('APP_NAME')}} promo"
+                                             onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder-rect.jpg') }}';">
+                                    </a>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flash Deal -->
+    @php
+        $flash_deal = \App\Models\FlashDeal::where('status', 1)->where('featured', 1)->first();
+    @endphp
+    @if($flash_deal != null && strtotime(date('Y-m-d H:i:s')) >= $flash_deal->start_date && strtotime(date('Y-m-d H:i:s')) <= $flash_deal->end_date)
+        <section class="mb-2 mb-md-3 mt-2 mt-md-3">
+            <div class="container">
+                <!-- Top Section -->
+                <div class="d-flex flex-wrap mb-2 mb-md-3 align-items-baseline justify-content-between">
+                    <!-- Title -->
+                    <h3 class="fs-16 fs-md-20 fw-700 mb-2 mb-sm-0">
+                        <span class="d-inline-block">{{ translate('Flash Sale') }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" class="ml-3">
+                            <path id="Path_28795" data-name="Path 28795" d="M30.953,13.695a.474.474,0,0,0-.424-.25h-4.9l3.917-7.81a.423.423,0,0,0-.028-.428.477.477,0,0,0-.4-.207H21.588a.473.473,0,0,0-.429.263L15.041,18.151a.423.423,0,0,0,.034.423.478.478,0,0,0,.4.2h4.593l-2.229,9.683a.438.438,0,0,0,.259.5.489.489,0,0,0,.571-.127L30.9,14.164a.425.425,0,0,0,.054-.469Z" transform="translate(-15 -5)" fill="#fcc201"/>
+                        </svg>
+                    </h3>
+                    <!-- Links -->
+                    <div>
+                        <div class="text-dark d-flex align-items-center mb-0">
+                            <a href="{{ route('flash-deals') }}" class="fs-10 fs-md-12 fw-700 text-reset has-transition opacity-60 hov-opacity-100 hov-text-primary animate-underline-primary mr-3">{{ translate('View All Flash Sale') }}</a>
+                            <span class=" border-left border-soft-light border-width-2 pl-3">
+                            <a href="{{ route('flash-deal-details', $flash_deal->slug) }}" class="fs-10 fs-md-12 fw-700 text-reset has-transition opacity-60 hov-opacity-100 hov-text-primary animate-underline-primary">{{ translate('View All Products from This Flash Sale') }}</a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Countdown for small device -->
+                <div class="bg-white mb-3 d-md-none">
+                    <div class="aiz-count-down-circle" end-date="{{ date('Y/m/d H:i:s', $flash_deal->end_date) }}"></div>
+                </div>
+
+                <div class="row gutters-5 gutters-md-16">
+                    <!-- Flash Deals Baner & Countdown -->
+                    <div class="col-xxl-4 col-lg-5 col-6 h-200px h-md-400px h-lg-475px">
+                        <div class="h-100 w-100 w-xl-auto" style="background-image: url('{{ uploaded_asset($flash_deal->banner) }}'); background-size: cover; background-position: center center;">
+                            <div class="py-5 px-md-3 px-xl-5 d-none d-md-block">
+                                <div class="bg-white">
+                                    <div class="aiz-count-down-circle" end-date="{{ date('Y/m/d H:i:s', $flash_deal->end_date) }}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Flash Deals Products -->
+                    <div class="col-xxl-8 col-lg-7 col-6">
+                        @php
+                            $flash_deals = $flash_deal->flash_deal_products->take(10);
+                        @endphp
+                        <div class="aiz-carousel border-top @if(count($flash_deals)>8) border-right @endif arrow-inactive-none arrow-x-0" data-items="5" data-xxl-items="5" data-xl-items="3.5" data-lg-items="3" data-md-items="2" data-sm-items="2.5" data-xs-items="2" data-arrows="true" data-dots="false">
+                            @php
+                                $init = 0 ;
+                                $end = 1 ;
+                            @endphp
+                            @for ($i = 0; $i < 5; $i++)
+                                <div class="carousel-box  @if($i==0) border-left @endif">
+                                    @foreach ($flash_deals as $key => $flash_deal_product)
+                                        @if ($key >= $init && $key <= $end)
+                                            @php
+                                                $product = \App\Models\Product::find($flash_deal_product->product_id);
+                                            @endphp
+                                            @if ($product != null && $product->published != 0)
+                                                @php
+                                                    $product_url = route('product', $product->slug);
+                                                    if($product->auction_product == 1) {
+                                                        $product_url = route('auction-product', $product->slug);
+                                                    }
+                                                @endphp
+                                                <div class="h-100px h-md-200px h-lg-auto flash-deal-item position-relative text-center border-bottom @if($i!=4) border-right @endif has-transition hov-shadow-out z-1">
+                                                    <a href="{{ $product_url }}" class="d-block py-md-3 overflow-hidden hov-scale-img" title="{{  $product->getTranslation('name')  }}">
+                                                        <!-- Image -->
+                                                        <img src="{{ uploaded_asset($product->thumbnail_img) }}" class="lazyload h-60px h-md-100px h-lg-140px mw-100 mx-auto has-transition"
+                                                             alt="{{  $product->getTranslation('name')  }}" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        <!-- Price -->
+                                                        @if(Auth::user())
+                                                            <div class="fs-10 fs-md-14 mt-md-3 text-center h-md-48px has-transition overflow-hidden pt-md-4 flash-deal-price">
+                                                                <span class="d-block text-primary fw-700">{{ home_discounted_base_price($product) }}</span>
+
+                                                                @if(home_base_price($product) != home_discounted_base_price($product))
+
+                                                                    <del class="d-block fw-400 text-secondary">{{ home_base_price($product) }}</del>
+                                                                @endif
+
+                                                            </div>
+                                                        @endif
+                                                        @if(!Auth::user())
+
+                                                                <span class="d-block text-primary fw700"><a href="{{route('user.login')}}">Login to see price</a></span>
+
+                                                        @endif
+
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        @endif
+                                    @endforeach
+
+                                    @php
+                                        $init += 2;
+                                        $end += 2;
+                                    @endphp
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    @endif
+    <!--featered categort-->
     @if (count($featured_categories) > 0)
         <section class="mb-2 mb-md-3 mt-2 mt-md-3">
             <div class="container">
@@ -41,15 +180,6 @@
             </div>
         </section>
     @endif
-
-
-
-
-
-
-
-
-
     <!-- Cupon -->
     @if(get_setting('coupon_system') == 1)
     <div class="mb-2 mb-md-3 mt-2 mt-md-3" style="background-color: {{ get_setting('cupon_background_color', '#292933') }}">
