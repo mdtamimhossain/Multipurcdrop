@@ -18,13 +18,15 @@
                         <ul class="list-group list-group-flush">
                             @php
                                 $total = 0;
+                                $subtotal=0;
                             @endphp
                             @foreach ($carts as $key => $cartItem)
                                 @php
                                     $product = \App\Models\Product::find($cartItem['product_id']);
                                     $product_stock = $product->stocks->where('variant', $cartItem['variation'])->first();
-                                    // $total = $total + ($cartItem['price']  + $cartItem['tax']) * $cartItem['quantity'];
-                                    $total = $total + cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
+                                    $total = $total + (($cartItem->your_price  + $cartItem->tax) * $cartItem->quantity);
+                                    $subtotal=$subtotal+$total;
+                                    //$total = $total + cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
                                     $product_name_with_choice = $product->getTranslation('name');
                                     if ($cartItem['variation'] != null) {
                                         $product_name_with_choice = $product->getTranslation('name').' - '.$cartItem['variation'];
@@ -87,7 +89,7 @@
                                         <!-- Total -->
                                         <div class="col-md col-5 order-4 order-md-0 my-3 my-md-0">
                                             <span class="opacity-60 fs-12 d-block d-md-none">{{ translate('Total')}}</span>
-                                            <span class="fw-700 fs-16 text-primary">{{ single_price(cart_product_price($cartItem, $product, false) * $cartItem['quantity']) }}</span>
+                                            <span class="fw-700 fs-16 text-primary">{{ $total }}</span>
                                         </div>
                                         <!-- Remove From Cart -->
                                         <div class="col-md-auto col-6 order-5 order-md-0 text-right">
@@ -104,7 +106,7 @@
                     <!-- Subtotal -->
                     <div class="px-0 py-2 mb-4 border-top d-flex justify-content-between">
                         <span class="opacity-60 fs-14">{{translate('Subtotal')}}</span>
-                        <span class="fw-700 fs-16">{{ single_price($total) }}</span>
+                        <span class="fw-700 fs-16">{{ single_price($subtotal) }}</span>
                     </div>
                     <div class="row align-items-center">
                         <!-- Return to shop -->

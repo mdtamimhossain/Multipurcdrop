@@ -85,29 +85,17 @@ class RegisterController extends Controller
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'phone'=>'+'.$data['country_code'].$data['phone'],
                 'password' => Hash::make($data['password']),
             ]);
-        }
-        else {
-            if (addon_is_activated('otp_system')){
-                $user = User::create([
-                    'name' => $data['name'],
-                    'phone' => '+'.$data['country_code'].$data['phone'],
-                    'password' => Hash::make($data['password']),
-                    'verification_code' => rand(100000, 999999)
-                ]);
-
-                $otpController = new OTPVerificationController;
-                $otpController->send_code($user);
-            }
         }
 
         if(session('temp_user_id') != null){
             Cart::where('temp_user_id', session('temp_user_id'))
-                    ->update([
-                        'user_id' => $user->id,
-                        'temp_user_id' => null
-            ]);
+                ->update([
+                    'user_id' => $user->id,
+                    'temp_user_id' => null
+                ]);
 
             Session::forget('temp_user_id');
         }
@@ -141,10 +129,14 @@ class RegisterController extends Controller
 
         $user = $this->create($request->all());
 
-
+        $this->guard()->login($user);
         if($user->email != null){
-
-
+            if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){
+                $user->email_verified_at = date('Y-m-d H:m:s');
+                $user->save();
+                flash(translate('Registration successful.'))->success();
+            }
+            else {
                 try {
                     $user->sendEmailVerificationNotification();
                     flash(translate('Registration successful. Please verify your email.'))->success();
@@ -152,7 +144,7 @@ class RegisterController extends Controller
                     $user->delete();
                     flash(translate('Registration failed. Please try again later.'))->error();
                 }
-
+            }
         }
 
         return $this->registered($request, $user)

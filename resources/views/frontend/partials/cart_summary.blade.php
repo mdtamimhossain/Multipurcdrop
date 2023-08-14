@@ -91,7 +91,8 @@
             </thead>
             <tbody>
                 @php
-                    $subtotal = 0;
+                    $subtotal=0;
+                    $yourPrice = 0;
                     $earnings=0;
                     $tax = 0;
                     $shipping = 0;
@@ -101,7 +102,8 @@
                 @foreach ($carts as $key => $cartItem)
                     @php
                         $product = \App\Models\Product::find($cartItem['product_id']);
-                        $subtotal += cart_product_price($cartItem, $product, false, false) * $cartItem['quantity'];
+                        $yourPrice += $yourPrice + (($cartItem->your_price  + $cartItem->tax) * $cartItem->quantity);
+                        $subtotal=$subtotal+ cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
                         $earnings += ($cartItem->your_price * $cartItem['quantity']);
                         $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
                         $product_shipping_cost = $cartItem['shipping_cost'];
@@ -129,7 +131,7 @@
             </tbody>
         </table>
 
-        <input type="hidden" id="sub_total" value="{{ $subtotal }}">
+        <input type="hidden" id="sub_total" value="{{ $yourPrice }}">
 
         <table class="table" style="margin-top: 2rem!important;">
             <tfoot>
@@ -140,11 +142,18 @@
                         <span class="fw-600">{{ single_price($subtotal) }}</span>
                     </td>
                 </tr>
+                <!-- Your Price-->
+                <tr class="cart-subtotal">
+                    <th class="pl-0 fs-14 pt-0 pb-2 text-dark fw-600 border-top-0">{{ translate('Your Price') }}</th>
+                    <td class="text-right pr-0 fs-14 pt-0 pb-2 fw-600 text-primary border-top-0">
+                        <span class="fw-600">{{ single_price($yourPrice) }}</span>
+                    </td>
+                </tr>
                 <!-- Your Earnings -->
                 <tr class="cart-subtotal">
                     <th class="pl-0 fs-14 pt-0 pb-2 text-dark fw-600 border-top-0">{{ translate('Your Earnings') }}</th>
                     <td class="text-right pr-0 fs-14 pt-0 pb-2 fw-600 text-primary border-top-0">
-                        <span class="fw-600">{{ single_price($earnings-$subtotal) }}</span>
+                        <span class="fw-600">{{ single_price($earnings-$yourPrice) }}</span>
                     </td>
                 </tr>
                 <!-- Tax -->
@@ -181,7 +190,7 @@
                 @endif
 
                 @php
-                    $total = $subtotal + $tax + $shipping;
+                    $total = $yourPrice + $tax + $shipping;
                     if (Session::has('club_point')) {
                         $total -= Session::get('club_point');
                     }

@@ -55,8 +55,7 @@ class CartController extends Controller
         $validatedData = $request->validate([
             'your_price' => 'required',
         ]);
-
-
+        
 
         if (!$validatedData) {
             return redirect()->back()->with('error', 'Give input you price');
