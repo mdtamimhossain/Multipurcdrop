@@ -97,7 +97,6 @@
                 <?php
                     $subtotal=0;
                     $yourPrice = 0;
-                    $earnings=0;
                     $tax = 0;
                     $shipping = 0;
                     $product_shipping_cost = 0;
@@ -108,7 +107,6 @@
                         $product = \App\Models\Product::find($cartItem['product_id']);
                         $yourPrice += $yourPrice + (($cartItem->your_price  + $cartItem->tax) * $cartItem->quantity);
                         $subtotal=$subtotal+ cart_product_price($cartItem, $product, false) * $cartItem['quantity'];
-                        $earnings += ($cartItem->your_price * $cartItem['quantity']);
                         $tax += cart_product_tax($cartItem, $product, false) * $cartItem['quantity'];
                         $product_shipping_cost = $cartItem['shipping_cost'];
 
@@ -159,7 +157,7 @@
                 <tr class="cart-subtotal">
                     <th class="pl-0 fs-14 pt-0 pb-2 text-dark fw-600 border-top-0"><?php echo e(translate('Your Earnings')); ?></th>
                     <td class="text-right pr-0 fs-14 pt-0 pb-2 fw-600 text-primary border-top-0">
-                        <span class="fw-600"><?php echo e(single_price($earnings-$yourPrice)); ?></span>
+                        <span class="fw-600"><?php echo e(single_price($yourPrice-$subtotal)); ?></span>
                     </td>
                 </tr>
                 <!-- Tax -->
